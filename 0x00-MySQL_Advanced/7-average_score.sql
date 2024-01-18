@@ -9,13 +9,23 @@ BEGIN
     FROM corrections
     WHERE user_id = user_id;
 
+    -- Create a temporary users table
+    CREATE TEMPORARY TABLE temp_users AS
+        SELECT id, name, average_score
+        FROM users
+        WHERE id = user_id;
+
     -- Update or insert the average score for the user
-    INSERT INTO user_average_scores (user_id, average_score)
-    VALUES (user_id, avg_score)
+    INSERT INTO users (id, name, average_score)
+    SELECT id, name, avg_score
+    FROM temp_users
     ON DUPLICATE KEY UPDATE average_score = avg_score;
+
+    -- Drop the temporary table
+    DROP TEMPORARY TABLE IF EXISTS temp_users;
+
 END;
 
 $$
 
 DELIMITER ;
-
