@@ -1,0 +1,5 @@
+// thsi script delete a collection with the attribute name
+
+db.school.deleteMany(
+	{ "name": "Holberton school" }
+	)
